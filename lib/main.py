@@ -1,5 +1,5 @@
-from customer import Customer
-from restaurant import Restaurant
+from Customer import Customer
+from Restaurant import Restaurant
 
 customer1 = Customer("John", "Doe")
 customer2 = Customer("Jane", "Smith")
