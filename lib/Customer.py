@@ -1,23 +1,26 @@
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
+from database import Base
 from review import Review
 
-class Customer:
-    all_customers = []
+class Customer(Base):
+    __tablename__ = "customers"
 
-    def __init__(self, given_name, family_name):
-        self.given_name = given_name
-        self.family_name = family_name
-        self.reviews = []
-        Customer.all_customers.append(self)
+    id = Column(Integer, primary_key=True)
+    given_name = Column(String)
+    family_name = Column(String)
+
+    
+    reviews = relationship("Review", back_populates="customer")
 
     def full_name(self):
         return f"{self.given_name} {self.family_name}"
 
-    @classmethod
-    def all(cls):
-        return cls.all_customers
+    def __str__(self):
+        return self.full_name()
 
     def add_review(self, restaurant, rating):
-        review = Review(self, restaurant, rating)
+        review = Review(customer=self, restaurant=restaurant, rating=rating)
         self.reviews.append(review)
         restaurant.reviews.append(review)
 
@@ -26,6 +29,3 @@ class Customer:
         for review in self.reviews:
             restaurant_list.append(review.restaurant)
         return list(set(restaurant_list))
-
-    def __str__(self):
-        return self.full_name()

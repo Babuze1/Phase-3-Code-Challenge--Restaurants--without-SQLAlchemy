@@ -1,10 +1,17 @@
-class Restaurant:
-    all_restaurants = []
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
+from database import Base
 
-    def __init__(self, name):
-        self.name = name
-        self.reviews = []
-        Restaurant.all_restaurants.append(self)
+class Restaurant(Base):
+    __tablename__ = "restaurants"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+
+    reviews = relationship("Review", back_populates="restaurant")
+
+    def __str__(self):
+        return self.name
 
     def average_star_rating(self):
         if not self.reviews:
@@ -17,6 +24,3 @@ class Restaurant:
         for review in self.reviews:
             customer_list.append(review.customer)
         return list(set(customer_list))
-
-    def __str__(self):
-        return self.name
