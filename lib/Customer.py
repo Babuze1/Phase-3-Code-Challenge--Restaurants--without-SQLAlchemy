@@ -19,13 +19,4 @@ class Customer(Base):
     def __str__(self):
         return self.full_name()
 
-    def add_review(self, restaurant, rating):
-        review = Review(customer=self, restaurant=restaurant, rating=rating)
-        self.reviews.append(review)
-        restaurant.reviews.append(review)
 
-    def restaurants(self):
-        restaurant_list = []
-        for review in self.reviews:
-            restaurant_list.append(review.restaurant)
-        return list(set(restaurant_list))
